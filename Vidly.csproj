@@ -45,6 +45,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.3.0-preview7-19363-02\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.3.0-preview7-19363-02\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -120,13 +132,50 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MoviesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908051119351_InitialModel.cs" />
+    <Compile Include="Migrations\201908051119351_InitialModel.Designer.cs">
+      <DependentUpon>201908051119351_InitialModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908051145582_AddIsSubscribed.cs" />
+    <Compile Include="Migrations\201908051145582_AddIsSubscribed.Designer.cs">
+      <DependentUpon>201908051145582_AddIsSubscribed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908051152537_AddMembershipType.cs" />
+    <Compile Include="Migrations\201908051152537_AddMembershipType.Designer.cs">
+      <DependentUpon>201908051152537_AddMembershipType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908051246331_PopulateMembershipType.cs" />
+    <Compile Include="Migrations\201908051246331_PopulateMembershipType.Designer.cs">
+      <DependentUpon>201908051246331_PopulateMembershipType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908051813162_AnnotationsToCustomerName.cs" />
+    <Compile Include="Migrations\201908051813162_AnnotationsToCustomerName.Designer.cs">
+      <DependentUpon>201908051813162_AnnotationsToCustomerName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908051910262_AddNameToMembershipType.cs" />
+    <Compile Include="Migrations\201908051910262_AddNameToMembershipType.Designer.cs">
+      <DependentUpon>201908051910262_AddNameToMembershipType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908051913178_SetNameToMembershipType.cs" />
+    <Compile Include="Migrations\201908051913178_SetNameToMembershipType.Designer.cs">
+      <DependentUpon>201908051913178_SetNameToMembershipType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\MembershipType.cs" />
+    <Compile Include="Models\Movies.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\RandomMovieViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-lumen.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -162,10 +211,13 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Movies\Random.cshtml" />
+    <Content Include="Views\Customers\Details.cshtml" />
+    <Content Include="Views\Customers\Index.cshtml" />
+    <Content Include="Views\Movies\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -179,6 +231,32 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201908051119351_InitialModel.resx">
+      <DependentUpon>201908051119351_InitialModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908051145582_AddIsSubscribed.resx">
+      <DependentUpon>201908051145582_AddIsSubscribed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908051152537_AddMembershipType.resx">
+      <DependentUpon>201908051152537_AddMembershipType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908051246331_PopulateMembershipType.resx">
+      <DependentUpon>201908051246331_PopulateMembershipType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908051813162_AnnotationsToCustomerName.resx">
+      <DependentUpon>201908051813162_AnnotationsToCustomerName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908051910262_AddNameToMembershipType.resx">
+      <DependentUpon>201908051910262_AddNameToMembershipType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908051913178_SetNameToMembershipType.resx">
+      <DependentUpon>201908051913178_SetNameToMembershipType.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -213,7 +291,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('packages\EntityFramework.6.3.0-preview7-19363-02\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.3.0-preview7-19363-02\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="packages\EntityFramework.6.3.0-preview7-19363-02\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.3.0-preview7-19363-02\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
