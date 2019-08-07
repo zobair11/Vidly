@@ -6,59 +6,37 @@ using System.Web.Mvc;
 using Vidly.Models;
 using Vidly.ViewModels;
 using Vidly.Controllers;
+using System.Data.Entity;
 public class MoviesController : Controller
 {
-    // GET: Movies
-    //public ActionResult Random()
-    //{
-    //    var movie = new Movies() { Name = "Sherk" };
-    //    var customers = new List<Customer>
-    //    {
-    //        new Customer { Name ="Kane Williamson" },
-    //        new Customer {Name = "Ben Stokes"}
-
-
-    //    };
-    //var viewModel = new RandomMovieViewModel
-    //{
-    //    Movie = movie,
-    //    Customers = customers
-
-    //    };
-    //    return View(viewModel);
-    //}
-
-    //public ActionResult Edit(int id) {
-    //    return Content("id=" + id);
-    //}
-
+    private ApplicationDbContext _context;
+    
+    public MoviesController()
+    {
+        _context = new ApplicationDbContext();
+    }
+    protected override void Dispose(bool disposing)
+    {
+        _context.Dispose();
+    }
     public ViewResult Index()
     {
-        var movies = GetMovies();
+        var movies = _context.Movies.Include(m => m.Genre).ToList();
         return View(movies);
     }
 
-    private IEnumerable<Movies> GetMovies()
+    public ActionResult Details(int id)
+    {
+       
+        var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.Id == id);
+        if (movie == null)
         {
-        return new List<Movies>
-            {
-                new Movies { Id =1, Name="Sherk"},
-                new Movies { Id =2, Name= "Terminator"}
-            };
-
+            return HttpNotFound();
         }
-        //public ActionResult Index(int? pageIndex, string sortBy)
-        //{
-        //    if (!pageIndex.HasValue)
-        //        pageIndex = 1;
-        //    if (String.IsNullOrWhiteSpace(sortBy))
-        //        sortBy = "Name";
-        //    return Content(String.Format("pageIndex={0}&sortBy={1}", pageIndex, sortBy));
-        //}
-        //[Route("movies/released/{year}/{month:regex(\\d{4}):range(1,12)}")]
-        //public ActionResult ByReleasedate(int year, int month)
-        //{
-        //    return Content(year + "/" + month);
-        //}
-          
+        else
+        {
+            return View(movie);
+        }
     }
+          
+ }
